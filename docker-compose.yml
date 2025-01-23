@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  itsmybot:
+    image: itsmybot
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: itsmybot
+    restart: unless-stopped
+    ports:
+      - "${PORT}:32423"  # Coolify will handle the port mapping
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - BOT_ENV=production
+    volumes:
+      - itsmybot-data:/app/data  # Named volume for persistent storage
+    networks:
+      - itsmybot-network
+
+volumes:
+  itsmybot-data:
+    driver: local
+
+networks:
+  itsmybot-network:
+    driver: bridge 

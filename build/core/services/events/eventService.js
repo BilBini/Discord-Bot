@@ -1,0 +1,79 @@
+import { join, dirname } from 'path';
+import { sync } from 'glob';
+import { fileURLToPath } from 'url';
+import { Event } from '../../../index.js';
+import { Service } from '../../contracts/index.js';
+/**
+ * Service to manage events in the bot.
+ */
+export default class EventService extends Service {
+    events;
+    constructor(manager) {
+        super(manager);
+        this.events = manager.events;
+    }
+    async initialize() {
+        this.manager.logger.info("Event service initialized.");
+        await this.registerFromDir(join(dirname(fileURLToPath(import.meta.url)), 'impl'));
+    }
+    async registerFromDir(eventsDir, plugin = undefined) {
+        const eventFiles = sync(join(eventsDir, '**', '*.js').replace(/\\/g, '/'));
+        for (const filePath of eventFiles) {
+            const eventPath = new URL('file://' + filePath.replace(/\\/g, '/')).href;
+            const { default: event } = await import(eventPath);
+            await this.registerEvent(new event(this.manager, plugin));
+        }
+        ;
+    }
+    async registerEvent(event) {
+        try {
+            if (!this.events.has(event.name)) {
+                this.events.set(event.name, new EventExecutor(event.once || false));
+            }
+            this.events.get(event.name)?.addEvent(event);
+        }
+        catch (error) {
+            event.logger.error(`Error initializing event '${Event.name}'`, error);
+        }
+    }
+    initializeEvents() {
+        for (const [name, executor] of this.events) {
+            if (executor.once) {
+                this.manager.client.once(name, (...args) => {
+                    executor.run(...args);
+                });
+            }
+            else {
+                this.manager.client.on(name, (...args) => {
+                    executor.run(...args);
+                });
+            }
+        }
+    }
+}
+export class EventExecutor {
+    events = [];
+    once;
+    constructor(once = false) {
+        this.once = once;
+    }
+    addEvent(event) {
+        this.events.push(event);
+        this.events.sort((a, b) => a.priority - b.priority);
+    }
+    async run(...args) {
+        let i = 0;
+        while (i < this.events.length) {
+            const event = this.events[i];
+            try {
+                await event.execute(...args);
+            }
+            catch (error) {
+                if (error === 'stop')
+                    break;
+                event.logger.error('Error executing event', error);
+            }
+            i++;
+        }
+    }
+}

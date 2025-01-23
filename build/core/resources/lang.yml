@@ -1,0 +1,107 @@
+
+no-permission:
+  content: "You don't have the permission to use that."
+  ephemeral: true
+
+in-cooldown:
+  content: "You're currently in cooldown. You can perform this action again %cooldown%."
+  ephemeral: true
+
+only-in-primary-guild:
+  content: "This action can only be used in the primary guild."
+  ephemeral: true
+
+pagination:
+  select-placeholder: "Page %current_page%/%total_pages%"
+  filters-placeholder: "Select a filter"
+  placeholder: "Select an option"
+  no-data:
+    content: "Nothing to display."
+    ephemeral: true
+  button-next:
+    label: "Next"
+    style: "Secondary"
+  button-previous:
+    label: "Previous"
+    style: "Secondary"
+  
+interaction:
+  in-cooldown:
+    content: "You can use this interaction again %cooldown%"
+    ephemeral: true
+  no-permission:
+    content: "You don't have the permission to use that interaction."
+    ephemeral: true
+  channel-restricted:
+    content: "You can't use this interaction in this channel. Please use it in %channels%."
+    ephemeral: true
+
+leaderboard:
+  messages-format: '`%position%.` %user_mention% • **%user_messages%** messages sent'
+  embeds:
+    - title: "🏆︎ Leaderboard - %leaderboard_name%"
+      description: "%current_item%"
+      footer: '%current_page%/%total_pages%'
+
+plugin:
+  information: |
+      ### %status% %name% v%version%
+      show=%has_description% - %description%
+      - Authors: %authors%
+      show=%has_website% - %website%
+
+  list:
+    content: |
+      Find below the list of plugins available:
+      %current_item%
+    ephemeral: true
+  enabled:
+    content: "The plugin `%plugin_name%` has been enabled. Restart the bot to apply the changes."
+    ephemeral: true
+  disabled:
+    content: "The plugin `%plugin_name%` has been disabled. Restart the bot to apply the changes."
+    ephemeral: true
+  already-enabled:
+    content: "The plugin `%plugin_name%` is already enabled."
+    ephemeral: true
+  already-disabled:
+    content: "The plugin `%plugin_name%` is already disabled."
+    ephemeral: true
+  not-found:
+    content: "The plugin `%plugin_name%` doesn't exist."
+    ephemeral: true
+
+reloaded:
+  content: "The bot has been reloaded. It may take a few seconds to deploy command."
+  ephemeral: true
+
+error-reloading:
+  embeds:
+    - title: "Error while reloading the bot"
+      description: |
+        An error occurred while reloading the bot.
+        ```yaml
+        %error_message%
+        ```
+      color: "#ff0000"
+      footer: "Error"
+      footer-icon: "%bot_pfp%"
+  ephemeral: true
+
+parsed:
+  embeds:
+    - description: |
+        Parsing the text for %user_mention%:
+        
+        ```
+        %parsed_text%
+        ```
+  ephemeral: true
+
+engine:
+  missing-argument:
+    content: "The script %script% is missing the `%missing%` argument."
+    ephemeral: true
+  missing-context:
+    content: "The script %script% is missing the `%missing%` context."
+    ephemeral: true
