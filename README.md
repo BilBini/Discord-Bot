@@ -94,7 +94,6 @@ This project is licensed under the Custom Software License Agreement - see the [
 ## Support
 
 For help and support:
-- Join our Discord: [@itsme.to](https://discord.gg/itsme)
 - Open an issue on GitHub
 
 ---
