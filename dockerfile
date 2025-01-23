@@ -14,14 +14,14 @@ COPY package.json yarn.lock* package-lock.json* ./
 # Install dependencies
 RUN npm install --production
 
-# Copy source files including .env
+# Copy source files
 COPY . .
 
 # Build TypeScript files
 RUN npm run build
 
-# Expose port
-EXPOSE 32423
+# Expose port (if needed)
+# EXPOSE 3000
 
 # Run the bot
 CMD ["npm", "start"]

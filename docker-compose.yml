@@ -3,9 +3,11 @@ version: '3.8'
 services:
   itsmybot:
     image: itsmybot
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+      args:
+        GIT_REPO: https://github.com/BilBini/Discord-Bot.git
     container_name: itsmybot
     restart: unless-stopped
     ports:
